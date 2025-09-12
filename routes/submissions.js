@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
       res.status(201).json({
         success: true,
         message:
-          "Your form was submitted, but we couldn't sync it to our system. Please contact the hospital to confirm your submission.",
+          "Your form was submitted, but we couldn't sync it to our system. Please contact us to confirm your submission.",
         submission: saved,
       });
     }

@@ -37,8 +37,6 @@
 //   console.log(`Server running on port ${PORT}`);
 // });
 
-
-
 // server.js (or index.js)
 const express = require("express");
 const mongoose = require("mongoose");
@@ -49,17 +47,18 @@ const app = express();
 
 /* ---------- CORS ---------- */
 // Allow multiple origins via env: FRONTEND_ORIGINS= http://localhost:3000, http://192.168.1.6:3000, https://your-prod-domain.com
-const ALLOWED = (process.env.FRONTEND_ORIGINS || process.env.FRONTEND_ORIGIN || "")
-  .split(",")
-  .map(s => s.trim())
-  .filter(Boolean);
+
+const ALLOWED = (process.env.FRONTEND_ORIGINS || "")
+  .split(",").map(s => s.trim()).filter(Boolean);
 
 const corsOptions = {
   origin(origin, cb) {
     // allow server-to-server tools (curl/Postman) with no Origin
     if (!origin) return cb(null, true);
-    const ok = ALLOWED.some(o => o === origin);
-    return ok ? cb(null, true) : cb(new Error(`CORS blocked for origin: ${origin}`));
+    const ok = ALLOWED.some((o) => o === origin);
+    return ok
+      ? cb(null, true)
+      : cb(new Error(`CORS blocked for origin: ${origin}`));
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

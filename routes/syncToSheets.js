@@ -35,13 +35,20 @@ async function syncToSheets() {
     return;
   }
 
+  function toSheetsSerialUTC(d) {
+  // Excel/Sheets epoch is 1899-12-30
+  const MS_PER_DAY = 86400000;
+  const EXCEL_EPOCH = Date.UTC(1899, 11, 30);
+  return (d.getTime() - EXCEL_EPOCH) / MS_PER_DAY;
+}
+
   const rows = submissions.map((doc) => [
     doc.name,
     doc.email,
     doc.message,
     doc.status,
     // doc.createdAt,
-    new Date(doc.createdAt).toISOString() //new change for correct time
+    toSheetsSerialUTC(new Date(doc.createdAt)),
   ]);
 
   await sheets.spreadsheets.values.append({

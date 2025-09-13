@@ -40,13 +40,14 @@ async function syncToSheets() {
     doc.email,
     doc.message,
     doc.status,
-    doc.createdAt,
+    // doc.createdAt,
+    new Date(doc.createdAt).toISOString() //new change for correct time
   ]);
 
   await sheets.spreadsheets.values.append({
     spreadsheetId: process.env.SHEET_ID,
     range: "Sheet1!A1",
-    valueInputOption: "RAW",
+    valueInputOption: "USER_ENTERED",//removed "RAW" and added "USER_ENTERED"
     requestBody: {
       values: rows,
     },
